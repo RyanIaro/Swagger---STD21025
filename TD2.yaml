@@ -443,6 +443,90 @@ paths:
           description: Forbiden
         404:
           description: Film not found 
+  /Films/{category}: 
+    get:
+      tags:
+        - Films
+      operationId: getFilmsByCategory
+      summary: Get films by category
+      description: Get a list of film by their category
+      parameters:
+        - name: category
+          in: path
+          required: true
+          schema: 
+            type: string
+      responses:
+        200:
+          description: Returned a list of films by category
+          content:
+            application/json:
+              schema: 
+                type: array
+                items:
+                  $ref: '#/components/schemas/Film'
+        404: 
+          description: Category not found
+    patch:
+      tags:
+        - Films
+      operationId: patchFilmByCategory
+      summary: Update catogory of films
+      description: Update the category of certain films
+      parameters:
+        - name: category
+          in: path
+          required: true
+          schema: 
+            type: string
+      requestBody:
+        description: Category to update
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                category:
+                  type: string
+                  example: "new_category"
+      responses:
+        200:
+          description: Returned a list of films by category
+          content:
+            application/json:
+              schema: 
+                type: array
+                items:
+                  $ref: '#/components/schemas/Film'
+        403:
+          description: Forbiden
+        404: 
+          description: Category not found
+    delete:
+      tags:
+        - Films
+      operationId: deleteFilmsByCategory
+      summary: Delete films by catogory
+      description: Delete all films of a certain category
+      parameters:
+        - name: category
+          in: path
+          required: true
+          schema: 
+            type: string
+      responses:
+        200: 
+          description: Films deleted
+          content:
+            application/json:
+              schema: 
+                type: array
+                items:
+                  $ref: '#/components/schemas/Film'
+        403:
+          description: Forbiden
+        404: 
+          description: Category not found
   /Projection:
     get:
       tags:
@@ -699,6 +783,9 @@ components:
         title:
           type: string
           example: "Star wars"
+        category: 
+          type: string
+          example: "action"
         time:
           type: string
           format: time
