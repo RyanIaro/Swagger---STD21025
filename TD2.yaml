@@ -12,6 +12,8 @@ tags:
     description: Films to project for viewers
   - name: Projections
     description: Which film to project and in which room
+  - name: Calendar
+    description: Calendar showing projection time
 paths:
   /Rooms:
     get:
@@ -31,59 +33,6 @@ paths:
                   $ref: '#/components/schemas/Room'
         400:
           description: Bad request
-        403:
-          description: Forbiden
-    post:
-      tags:
-        - Rooms
-      operationId: postRoom
-      summary: Add room
-      description: Add a new room
-      requestBody:
-        description: Room to be added
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateRoom'
-        required: true
-      responses:
-        200:
-          description: Room added successfully
-          content:
-            application/json:
-              schema: 
-                $ref: '#/components/schemas/Room'
-        400:
-          description: Bad request
-        403:
-          description: Forbiden 
-    patch:
-      tags:
-        - Rooms
-      operationId: patchRooms
-      summary: Update rooms partially
-      description: |
-        Possible modifications:
-        * capacity: integer
-      requestBody:
-        description: Property to Update
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Room'
-            examples:
-              changeCapacity:
-                summary: Change capacity
-                value:
-                  capacity: 251
-        required: true
-      responses:
-        200:
-          description: Rooms updated
-          content:
-            application/json:
-              schema: 
-                $ref: '#/components/schemas/Room'
         403:
           description: Forbiden
   /Rooms/{id}:
@@ -113,106 +62,6 @@ paths:
           description: Forbiden
         404:
           description: Room not found
-    put:
-      tags:
-        - Rooms
-      operationId: putRoom
-      summary: Update a room
-      description: Update all properties of a specified room
-      parameters:
-        - name: id
-          in: path
-          description: ID of the room to delete
-          required: true
-          schema:
-            type: integer
-      requestBody:
-        description: Properties to Update
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Room'
-        required: true
-      responses:
-        200:
-          description: Room updated
-          content:
-            application/json:
-              schema: 
-                $ref: '#/components/schemas/Room'
-        403:
-          description: Forbiden
-        404:
-          description: Room not found
-    patch:
-      tags:
-        - Rooms
-      operationId: patchRoom
-      summary: Update a room partially
-      description: |
-        Possible modifications:
-        * capacity: integer
-        * id: integer
-      parameters:
-        - name: id
-          in: path
-          description: ID of the room to delete
-          required: true
-          schema:
-            type: integer
-      requestBody:
-        description: Property to Update
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Room'
-            examples:
-              changeCapacity:
-                summary: Change capacity
-                value:
-                  capacity: 251
-              changeId:
-                summary: Change ID
-                value:
-                  id: 2
-        required: true
-      responses:
-        200:
-          description: Room updated
-          content:
-            application/json:
-              schema: 
-                $ref: '#/components/schemas/Room'
-        403:
-          description: Forbiden
-        404:
-          description: Room not found
-    delete:
-      tags:
-        - Rooms
-      operationId: deleteRoom
-      summary: Delete a room
-      description: Delete a specified room
-      parameters:
-        - name: id
-          in: path
-          description: ID of the room to delete
-          required: true
-          schema:
-            type: integer
-      responses:
-        200:
-          description: Room deleted
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Room'
-        400:
-          description: Bad request
-        403:
-          description: Forbiden
-        404:
-          description: Room not found 
   /Films:
     get:
       tags:
@@ -233,72 +82,29 @@ paths:
           description: Bad request
         403:
           description: Forbiden
-    post:
+    put:
       tags:
         - Films
-      operationId: postFilm
-      summary: Add film
-      description: Add a new film
+      operationId: putFilms
+      summary: Update all films
+      description: Entirely update all films
       requestBody:
-        description: Film to be added
+        description: Properties to be updated
         content:
           application/json:
-            schema:
+            schema: 
               $ref: '#/components/schemas/CreateFilm'
-        required: true
       responses:
         200:
-          description: Film added successfully
+          description: Get a list of all films
           content:
             application/json:
-              schema: 
-                $ref: '#/components/schemas/Film'
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Film'
         400:
           description: Bad request
-        403:
-          description: Forbiden 
-    patch:
-      tags:
-        - Films
-      operationId: patchFilms
-      summary: Update films partially
-      description: |
-        Possible modifications:
-        * title: string
-        * time: string($time)
-        * author: string
-        * release_date: string($date)
-      requestBody:
-        description: Property to Update
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Film'
-            examples:
-              changeTitle:
-                summary: Change title
-                value:
-                  title: "New title"
-              changeTime:
-                summary: Change time
-                value:
-                  time: "03:00"
-              changeAuthor:
-                summary: Change author
-                value:
-                  author: "New author"
-              changeRelease_date:
-                summary: Change release date
-                value:
-                  release_date: "2021-01-01"
-        required: true
-      responses:
-        200:
-          description: Films updated
-          content:
-            application/json:
-              schema: 
-                $ref: '#/components/schemas/Film'
         403:
           description: Forbiden
   /Films/{id}:
@@ -346,65 +152,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Film'
-        required: true
-      responses:
-        200:
-          description: Film updated
-          content:
-            application/json:
-              schema: 
-                $ref: '#/components/schemas/Film'
-        403:
-          description: Forbiden
-        404:
-          description: Film not found
-    patch:
-      tags:
-        - Films
-      operationId: patchFilm
-      summary: Update a film partially
-      description: |
-        Possible modifications:
-        * title: string
-        * time: string($time)
-        * author: string
-        * release_date: string($date)
-        * id: integer
-      parameters:
-        - name: id
-          in: path
-          description: ID of the film to update
-          required: true
-          schema:
-            type: integer
-      requestBody:
-        description: Property to Update
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Film'
-            examples:
-              changeTitle:
-                summary: Change title
-                value:
-                  title: "New title"
-              changeTime:
-                summary: Change time
-                value:
-                  time: "03:00"
-              changeAuthor:
-                summary: Change author
-                value:
-                  author: "New author"
-              changeRelease_date:
-                summary: Change release date
-                value:
-                  release_date: "2021-01-01"
-              changeId:
-                summary: Change id
-                value: 
-                  id: 2
+              $ref: '#/components/schemas/CreateFilm'
         required: true
       responses:
         200:
@@ -443,7 +191,7 @@ paths:
           description: Forbiden
         404:
           description: Film not found 
-  /Films/{category}: 
+  /Films/category: 
     get:
       tags:
         - Films
@@ -452,7 +200,7 @@ paths:
       description: Get a list of film by their category
       parameters:
         - name: category
-          in: path
+          in: query
           required: true
           schema: 
             type: string
@@ -465,66 +213,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Film'
-        404: 
-          description: Category not found
-    patch:
-      tags:
-        - Films
-      operationId: patchFilmByCategory
-      summary: Update catogory of films
-      description: Update the category of certain films
-      parameters:
-        - name: category
-          in: path
-          required: true
-          schema: 
-            type: string
-      requestBody:
-        description: Category to update
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                category:
-                  type: string
-                  example: "new_category"
-      responses:
-        200:
-          description: Returned a list of films by category
-          content:
-            application/json:
-              schema: 
-                type: array
-                items:
-                  $ref: '#/components/schemas/Film'
-        403:
-          description: Forbiden
-        404: 
-          description: Category not found
-    delete:
-      tags:
-        - Films
-      operationId: deleteFilmsByCategory
-      summary: Delete films by catogory
-      description: Delete all films of a certain category
-      parameters:
-        - name: category
-          in: path
-          required: true
-          schema: 
-            type: string
-      responses:
-        200: 
-          description: Films deleted
-          content:
-            application/json:
-              schema: 
-                type: array
-                items:
-                  $ref: '#/components/schemas/Film'
-        403:
-          description: Forbiden
         404: 
           description: Category not found
   /Projection:
@@ -580,7 +268,7 @@ paths:
         Possible modifications:
         * film: object
         * room: object
-        * projectionTime: string($date)
+        * projectionTime: string($date-time)
       requestBody:
         description: Property to Update
         content:
@@ -761,6 +449,29 @@ paths:
           description: Forbiden
         404:
           description: Projection not found 
+  /Calendar:
+    get:
+      tags:
+        - Calendar
+      operationId: getCalendar
+      summary: Get a list of projections in a week
+      description: Get projections in the week of a specified date
+      parameters:
+        - name: date
+          in: query
+          required: true
+          schema: 
+            type: string
+            example: Monday, 01 August 2022
+      responses:
+        200: 
+          description: Returned a list of projections of the specified date's week 
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Calendar'
+        400:
+          description: Bad request
 components:
   schemas:
     CreateRoom:
@@ -786,7 +497,7 @@ components:
         category: 
           type: string
           example: "action"
-        time:
+        duration:
           type: string
           format: time
           example: "02:15"
@@ -816,23 +527,37 @@ components:
             - $ref: '#/components/schemas/Room'
         projectionTime:
           type: string
-          format: time
-          example: "03:00 PM"
+          format: date-time
     Projection:
       allOf:
         - $ref: '#/components/schemas/CreateProjection'
       type: object
       properties:
-        film: 
-          allOf:
-            - $ref: '#/components/schemas/Film'
-        room:
-          allOf:
-            - $ref: '#/components/schemas/Room'
-        projectionTime:
-          type: string
-          format: time
-          example: "03:00 PM"
         id:
           type: integer
           example: 3
+    Calendar:
+      type: array
+      items:
+        $ref: '#/components/schemas/Day'
+    Day:
+      type: object
+      properties:
+        date:
+          type: string
+          example: Monday, 01 August 2022
+        schedule: 
+          type: array
+          items:
+            $ref: '#/components/schemas/Schedule'
+        projection:
+          type: array
+          items:
+            $ref: '#/components/schemas/Projection'
+    Schedule:
+      type: object
+      properties:
+        hour:
+          type: string
+          format: time
+          example: "02:00 PM"
